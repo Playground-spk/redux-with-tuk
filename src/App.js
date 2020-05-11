@@ -1,26 +1,58 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import CounterDisplay from "./component/CounterDisplay";
+import CounterPanel from "./component/CounterPanel";
+import { connect } from "react-redux";
 
-function App() {
+function App(props) {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <CounterDisplay counter={props.ctr} />
+      <CounterPanel label="increase" changed={props.incrementCounter} />
+      <CounterPanel label="decrease" changed={props.decreaseCounter} />
+      <CounterPanel
+        label="increase value"
+        changed={props.incrementCounterByValue}
+        input={true}
+        changedInput={props.changeInput}
+        inputState={props.input}
+      />
+      <CounterPanel
+        label="decrease value"
+        changed={props.decreaseCounterByValue}
+        input={true}
+        changedInput={props.changeInput}
+        inputState={props.input}
+      />
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    ctr: state.counter,
+    input: state.input,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    incrementCounter: () => {
+      dispatch({ type: "incrementCounter" });
+    },
+    decreaseCounter: () => {
+      dispatch({ type: "decreaseCounter" });
+    },
+    incrementCounterByValue: (value) => {
+      dispatch({ type: "incrementCounterByValue", value: value });
+    },
+    changeInput: (value) => {
+      dispatch({ type: "changeInput", value });
+    },
+    decreaseCounterByValue: (value) => {
+      dispatch({ type: "decreaseCounterByValue", value });
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(App);
