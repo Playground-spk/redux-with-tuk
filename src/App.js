@@ -4,6 +4,7 @@ import "./App.css";
 import CounterDisplay from "./component/CounterDisplay";
 import CounterPanel from "./component/CounterPanel";
 import { connect } from "react-redux";
+import * as actionTypes from "./store/action";
 
 function App(props) {
   return (
@@ -25,6 +26,22 @@ function App(props) {
         changedInput={props.changeInput}
         inputState={props.input}
       />
+      <button
+        onClick={() => {
+          props.keepResult(props.ctr);
+        }}
+      >
+        keep Result
+      </button>
+      <ul>
+        {props.results.map((result) => {
+          return (
+            <li onClick={() => props.deleteResult(result.id)}>
+              {result.counter}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
@@ -32,26 +49,30 @@ function App(props) {
 const mapStateToProps = (state) => {
   return {
     ctr: state.counter,
-    input: state.input,
+    results: state.result,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     incrementCounter: () => {
-      dispatch({ type: "incrementCounter" });
+      dispatch({ type: actionTypes.incrementCounter });
     },
     decreaseCounter: () => {
-      dispatch({ type: "decreaseCounter" });
+      dispatch({ type: actionTypes.decreaseCounter });
     },
     incrementCounterByValue: (value) => {
-      dispatch({ type: "incrementCounterByValue", value: value });
+      dispatch({ type: actionTypes.incrementCounterByValue, value: value });
     },
-    changeInput: (value) => {
-      dispatch({ type: "changeInput", value });
-    },
+
     decreaseCounterByValue: (value) => {
-      dispatch({ type: "decreaseCounterByValue", value });
+      dispatch({ type: actionTypes.decreaseCounterByValue, value });
+    },
+    keepResult: (value) => {
+      dispatch({ type: actionTypes.keepResult, counter: value });
+    },
+    deleteResult: (id) => {
+      dispatch({ type: actionTypes.deleteResult, id });
     },
   };
 };

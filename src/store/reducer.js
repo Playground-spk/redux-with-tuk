@@ -1,43 +1,52 @@
+import * as actionTypes from "../store/action";
+
 const initialState = {
   counter: 0,
-  input: "",
+  result: [],
 };
 
 const reducer = (state = initialState, action) => {
-  if (action.type === "incrementCounter") {
-    return {
-      ...state,
-      counter: state.counter + 1,
-    };
-  }
+  switch (action.type) {
+    case actionTypes.incrementCounter:
+      return {
+        ...state,
+        counter: state.counter + 1,
+      };
 
-  if (action.type === "decreaseCounter") {
-    return {
-      ...state,
-      counter: state.counter - 1,
-    };
-  }
+    case actionTypes.decreaseCounter:
+      return {
+        ...state,
+        counter: state.counter - 1,
+      };
 
-  if (action.type === "changeInput") {
-    return {
-      ...state,
-      input: action.value,
-    };
-  }
+    case actionTypes.incrementCounterByValue:
+      return {
+        ...state,
+        counter: state.counter + Number(action.value),
+        input: "",
+      };
 
-  if (action.type === "incrementCounterByValue") {
-    return {
-      ...state,
-      counter: state.counter + Number(action.value),
-      input: "",
-    };
-  }
-  if (action.type === "decreaseCounterByValue") {
-    return {
-      ...state,
-      counter: state.counter - Number(action.value),
-      input: "",
-    };
+    case actionTypes.decreaseCounterByValue:
+      return {
+        ...state,
+        counter: state.counter - Number(action.value),
+        input: "",
+      };
+
+    case actionTypes.keepResult:
+      return {
+        ...state,
+        result: state.result.concat({
+          id: new Date(),
+          counter: action.counter,
+        }),
+      };
+
+    case actionTypes.deleteResult:
+      return {
+        ...state,
+        result: state.result.filter((result) => result.id !== action.id),
+      };
   }
   return state;
 };
