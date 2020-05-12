@@ -48,8 +48,8 @@ function App(props) {
 
 const mapStateToProps = (state) => {
   return {
-    ctr: state.counter,
-    results: state.result,
+    ctr: state.ctr.counter,
+    results: state.rs.result,
   };
 };
 
